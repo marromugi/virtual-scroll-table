@@ -5,6 +5,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  optimizeFileTracing: false,
 }
 
 module.exports = nextConfig
