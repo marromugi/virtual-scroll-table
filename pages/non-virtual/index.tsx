@@ -14,11 +14,13 @@ import {
 } from '@/components/ui/table'
 import { SemiboldText, Title } from '@/components/ui/text'
 import { POKEMON_TYPES_JP } from '@/const/pokemon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getPokemons } from '@/utils/pokemon'
+import { usePokemon } from '@/hooks/usePokemon'
 
-export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
+export const Page = () => {
   const pokemonTypes = POKEMON_TYPES_JP
+  const defaultPokemons = usePokemon()
   const [pokemons, setPokemons] = useState(defaultPokemons)
 
   const isPokemonHasType = (pokemon: any, typeName: string) => {
@@ -39,6 +41,10 @@ export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
     })
     setPokemons(updatedPokemons)
   }
+
+  useEffect(() => {
+    setPokemons(defaultPokemons)
+  }, [defaultPokemons])
 
   return (
     <FlexBox
@@ -116,15 +122,6 @@ export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
       </TableContainer>
     </FlexBox>
   )
-}
-
-export const getStaticProps = async () => {
-  const defaultPokemons = await getPokemons()
-  return {
-    props: {
-      defaultPokemons,
-    },
-  }
 }
 
 export default Page

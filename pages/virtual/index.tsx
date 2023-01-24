@@ -13,15 +13,16 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { SemiboldText, Title } from '@/components/ui/text'
+import { usePokemon } from '@/hooks/usePokemon'
 import { POKEMON_TYPES_JP } from '@/const/pokemon'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { TABLE_ROW_HEIGHT_PX } from '@/const/element'
 import { useVirtualizer, VirtualItem } from '@tanstack/react-virtual'
-import { getPokemons } from '@/utils/pokemon'
 
-export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
+export const Page = () => {
   const pokemonTypes = POKEMON_TYPES_JP
-  const [pokemons, setPokemons] = useState(defaultPokemons)
+  const defaultPokemons = usePokemon()
+  const [pokemons, setPokemons] = useState<any[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
 
   const isPokemonHasType = (pokemon: any, typeName: string) => {
@@ -140,6 +141,10 @@ export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
     )
   }
 
+  useEffect(() => {
+    setPokemons(defaultPokemons)
+  }, [defaultPokemons])
+
   return (
     <FlexBox
       width={'100vw'}
@@ -174,15 +179,6 @@ export const Page = ({ defaultPokemons }: { defaultPokemons: any[] }) => {
       </TableContainer>
     </FlexBox>
   )
-}
-
-export const getStaticProps = async () => {
-  const defaultPokemons = await getPokemons()
-  return {
-    props: {
-      defaultPokemons,
-    },
-  }
 }
 
 export default Page
